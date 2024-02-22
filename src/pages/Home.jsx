@@ -1,25 +1,25 @@
-import React from "react";
-import Card from "../components/Card";
+import React from 'react';
 
-export default function Home({
-  searchValue,
-  searchInputValue,
+import Card from '../components/Card';
+
+function Home({
   items,
-  addToFavorite,
-  addItemToCart,
+  searchValue,
   setSearchValue,
+  onChangeSearchInput,
+  onAddToFavorite,
+  onAddToCart,
   isLoading,
 }) {
   const renderItems = () => {
-    const filteredItems = items.filter((item) =>
-      item.title.toLowerCase().includes(searchValue.toLowerCase())
+    const filtredItems = items.filter((item) =>
+      item.title.toLowerCase().includes(searchValue.toLowerCase()),
     );
-
-    return (isLoading ? [...Array(10)] : filteredItems).map((item, index) => (
+    return (isLoading ? [...Array(8)] : filtredItems).map((item, index) => (
       <Card
         key={index}
-        onClickPlus={(obj) => addItemToCart(obj)}
-        onClickFavorite={(obj) => addToFavorite(obj)}
+        onFavorite={(obj) => onAddToFavorite(obj)}
+        onPlus={(obj) => onAddToCart(obj)}
         loading={isLoading}
         {...item}
       />
@@ -29,28 +29,23 @@ export default function Home({
   return (
     <div className="content p-40">
       <div className="d-flex align-center justify-between mb-40">
-        <h1>
-          {searchValue ? `Поиск по запросу: ${searchValue}` : "Все кроссовки"}
-        </h1>
-        <div className="search-block d-flex align-center">
+        <h1>{searchValue ? `Поиск по запросу: "${searchValue}"` : 'Все кроссовки'}</h1>
+        <div className="search-block d-flex">
+          <img src="img/search.svg" alt="Search" />
           {searchValue && (
             <img
-              onClick={() => setSearchValue("")}
-              className="removeBtn cu-p clear"
-              src="/img/btn-remove.svg"
-              alt="Remove"
+              onClick={() => setSearchValue('')}
+              className="clear cu-p"
+              src="img/btn-remove.svg"
+              alt="Clear"
             />
           )}
-          <img src="/img/search.svg" alt="Search" />
-          <input
-            value={searchValue}
-            onChange={searchInputValue}
-            placeholder="Поиск..."
-          />
+          <input onChange={onChangeSearchInput} value={searchValue} placeholder="Поиск..." />
         </div>
       </div>
-
       <div className="d-flex flex-wrap">{renderItems()}</div>
     </div>
   );
 }
+
+export default Home;
